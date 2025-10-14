@@ -1,4 +1,5 @@
 import { getNearestShops } from '#app'
+import { isValidPosition } from '#utils/distance.utils'
 
 function main(params) {
   const position = {
@@ -6,7 +7,10 @@ function main(params) {
     y: process.argv[3],
   }
 
-  console.log(position)
+  if (!isValidPosition(position)) {
+    console.log('Please provide valid x and y coordinates')
+    return
+  }
 
   getNearestShops(position)
 }

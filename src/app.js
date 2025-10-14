@@ -1,4 +1,4 @@
-import { getCoffeeShopsService } from '#services/coffee-shops.service'
+import { getClosestCoffeeShopsWithDistance } from '#services/coffee-shops.service'
 
 /**
  * @param {Object} position
@@ -9,7 +9,11 @@ import { getCoffeeShopsService } from '#services/coffee-shops.service'
  */
 export async function getNearestShops(position) {
   // code
-  await getCoffeeShopsService()
+  const result = await getClosestCoffeeShopsWithDistance({ position })
 
-  return []
+  result.forEach((item) => {
+    console.log(item.name, item.distance)
+  })
+
+  return result
 }

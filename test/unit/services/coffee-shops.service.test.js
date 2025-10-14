@@ -1,31 +1,47 @@
 import { getCoffeeShopsRepository } from '#repositories/coffee-shops.repository'
 import { getTokenService, refreshTokenService } from '#services/tokens.service'
 
-import { getCoffeeShopsService } from '#services/coffee-shops.service'
+import {
+  getCoffeeShopsService,
+  getClosestCoffeeShopsWithDistance,
+} from '#services/coffee-shops.service'
+import {
+  getManhattanDistance,
+  getEuclideanDistance,
+} from '#utils/distance.utils'
 
 jest.mock('#repositories/coffee-shops.repository')
 jest.mock('#services/tokens.service')
+jest.mock('#utils/distance.utils')
 
 describe('Coffee Shop Service', () => {
+  const token = 'test-token'
+  const mockData = [
+    {
+      id: 1,
+      created_at: '2025-02-12T15:41:16.016Z',
+      updated_at: '2025-02-12T15:41:16.016Z',
+      name: 'Blue Bottle Seattle',
+      x: '47.581',
+      y: '-122.316',
+    },
+    {
+      id: 2,
+      created_at: '2025-02-12T15:41:16.023Z',
+      updated_at: '2025-02-12T15:41:16.023Z',
+      name: 'Blue Bottle SF',
+      x: '37.521',
+      y: '-122.334',
+    },
+  ]
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   describe('getCoffeeShopsService', () => {
-    const token = 'test-token'
-    const mockData = [
-      {
-        id: 1,
-        created_at: '2025-02-12T15:41:16.016Z',
-        updated_at: '2025-02-12T15:41:16.016Z',
-        name: 'Blue Bottle Seattle',
-        x: '47.581',
-        y: '-122.316',
-      },
-    ]
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
     it('should get the coffee shops', async () => {
-      getCoffeeShopsRepository.mockResolvedValue(mockData)
+      getCoffeeShopsRepository.mockResolvedValue([...mockData])
       getTokenService.mockResolvedValue(token)
 
       await getCoffeeShopsService()
@@ -44,7 +60,7 @@ describe('Coffee Shop Service', () => {
         .mockRejectedValueOnce({
           status: 401,
         })
-        .mockResolvedValue(mockData)
+        .mockResolvedValue([...mockData])
       getTokenService.mockResolvedValue(token)
       refreshTokenService.mockResolvedValue(newToken)
 
@@ -67,6 +83,29 @@ describe('Coffee Shop Service', () => {
       const promiseRespose = getCoffeeShopsService()
 
       await expect(promiseRespose).rejects.toEqual(error)
+    })
+  })
+
+  describe('getClosestCoffeeShopsWithDistance', () => {
+    it('should return the closest coffee shops with their distance', async () => {
+      const mockDistance = '10.0000'
+      getCoffeeShopsRepository.mockResolvedValue([...mockData])
+      getTokenService.mockResolvedValue(token)
+
+      // this will make sure the mockData array is sorted: [mockData[1], mockData[0]]
+      getManhattanDistance.mockReturnValueOnce(1)
+      getManhattanDistance.mockReturnValueOnce(2)
+
+      getEuclideanDistance.mockReturnValueOnce(mockDistance)
+
+      const position = { x: 47.6, y: -122.4 }
+
+      const result = await getClosestCoffeeShopsWithDistance({
+        position,
+        limit: 1,
+      })
+
+      expect(result).toEqual([{ ...mockData[1], distance: mockDistance }])
     })
   })
 })

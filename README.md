@@ -1,8 +1,16 @@
 # Javascript Interview Starting Point
 
-This repo will serve as a starting point for your code challenge. Feel free to change anything in order to complete it: Add modules, other tests, new packages etc.
+This app reads the user’s location through CLI and returns a list of the three closest coffee shops.
 
-## Example
+## Installation
+
+    $ yarn install
+
+## Requirements
+
+In order to run the application, you will need the `.env` file.
+
+## Running the application
 
 **Input**
 

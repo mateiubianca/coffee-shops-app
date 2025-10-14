@@ -5,14 +5,10 @@ import {
   getCoffeeShopsService,
   getClosestCoffeeShopsWithDistance,
 } from '#services/coffee-shops.service'
-import {
-  getManhattanDistance,
-  getEuclideanDistance,
-} from '#utils/distance.utils'
+import * as distanceUtils from '#utils/distance.utils'
 
 jest.mock('#repositories/coffee-shops.repository')
 jest.mock('#services/tokens.service')
-jest.mock('#utils/distance.utils')
 
 describe('Coffee Shop Service', () => {
   const token = 'test-token'
@@ -36,6 +32,7 @@ describe('Coffee Shop Service', () => {
   ]
 
   afterEach(() => {
+    jest.resetModules()
     jest.clearAllMocks()
   })
 
@@ -92,11 +89,13 @@ describe('Coffee Shop Service', () => {
       getCoffeeShopsRepository.mockResolvedValue([...mockData])
       getTokenService.mockResolvedValue(token)
 
+      const getSquaredEuclideanDistanceSpy = jest.spyOn(
+        distanceUtils,
+        'getSquaredEuclideanDistance'
+      )
       // this will make sure the mockData array is sorted: [mockData[1], mockData[0]]
-      getManhattanDistance.mockReturnValueOnce(1)
-      getManhattanDistance.mockReturnValueOnce(2)
-
-      getEuclideanDistance.mockReturnValueOnce(mockDistance)
+      getSquaredEuclideanDistanceSpy.mockReturnValueOnce(1000)
+      getSquaredEuclideanDistanceSpy.mockReturnValueOnce(100)
 
       const position = { x: 47.6, y: -122.4 }
 
@@ -106,6 +105,35 @@ describe('Coffee Shop Service', () => {
       })
 
       expect(result).toEqual([{ ...mockData[1], distance: mockDistance }])
+    })
+
+    it('should return the closest coffee shop even when the Manhattan distance is smaller than euclidean', async () => {
+      const mockDistance = '8.4853'
+      // manhattan distance would say that mockData[0] is closer, but euclidean distance proves that mockData[1] is closer
+      getCoffeeShopsRepository.mockResolvedValue([
+        {
+          ...mockData[0],
+          x: 9,
+          y: 1,
+        },
+        {
+          ...mockData[1],
+          x: 6,
+          y: 6,
+        },
+      ])
+      getTokenService.mockResolvedValue(token)
+
+      const position = { x: 0, y: 0 }
+
+      const result = await getClosestCoffeeShopsWithDistance({
+        position,
+        limit: 1,
+      })
+
+      expect(result).toEqual([
+        { ...mockData[1], x: 6, y: 6, distance: mockDistance },
+      ])
     })
 
     it('should return an empty array if an error is thrown', async () => {

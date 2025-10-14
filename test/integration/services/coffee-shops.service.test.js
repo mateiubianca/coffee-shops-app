@@ -29,5 +29,14 @@ describe('Coffee Shops Integration', () => {
       expect(coffeeShops[0]).toHaveProperty('name')
       expect(coffeeShops[0]).toHaveProperty('distance')
     })
+
+    it('should return an empty array if an invalid position is used', async () => {
+      const coffeeShops = await getClosestCoffeeShopsWithDistance({
+        position: { x: 'invalid', y: -122.4 },
+      })
+
+      expect(Array.isArray(coffeeShops)).toBe(true)
+      expect(coffeeShops.length).toBe(0)
+    })
   })
 })

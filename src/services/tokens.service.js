@@ -10,6 +10,7 @@ export const refreshTokenService = async () => {
 
 export const getTokenService = async () => {
   if (CACHED_TOKEN) {
+    // use cached token if it exists
     return CACHED_TOKEN
   }
 

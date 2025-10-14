@@ -96,7 +96,7 @@ describe('HTTP utils', () => {
     })
 
     it('should retry the request for server errors and throw the final error', async () => {
-      const mockData = 'Unauthorized'
+      const mockData = 'Server error'
       const textMock = jest.fn().mockResolvedValue(mockData)
 
       const errorResponseMock = mocks.getHttp503ErrorResponse()

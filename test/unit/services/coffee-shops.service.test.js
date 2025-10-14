@@ -107,5 +107,21 @@ describe('Coffee Shop Service', () => {
 
       expect(result).toEqual([{ ...mockData[1], distance: mockDistance }])
     })
+
+    it('should return an empty array if an error is thrown', async () => {
+      const error = { status: 503 }
+
+      getCoffeeShopsRepository.mockRejectedValue(error)
+      getTokenService.mockResolvedValue(token)
+
+      const position = { x: 47.6, y: -122.4 }
+
+      const result = await getClosestCoffeeShopsWithDistance({
+        position,
+        limit: 1,
+      })
+
+      expect(result).toEqual([])
+    })
   })
 })

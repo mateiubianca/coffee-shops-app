@@ -9,6 +9,7 @@ export class HttpError extends Error {
   }
 }
 
+// fetch wrapper that has built in retry startegy
 export const httpRequest = async (
   url,
   options = {},
@@ -35,6 +36,7 @@ export const httpRequest = async (
     } catch (err) {
       lastError = err
 
+      // if server error 5xx -> retry the fetch
       if (err.status && err.status >= 500 && err.status < 600) {
         attempts += 1
         console.warn(`Retrying fetch for ${url}... (${attempts}/${retries})`)
@@ -44,5 +46,6 @@ export const httpRequest = async (
     }
   }
 
+  // if an error that is not 5xx was thrown or the number of retries has exceded the retries parameter, we throw the error
   throw lastError
 }

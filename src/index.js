@@ -1,4 +1,4 @@
-import { getNearestShops } from './app.js'
+import { getNearestShops } from '#app'
 
 function main(params) {
   const position = {

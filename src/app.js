@@ -1,3 +1,5 @@
+import { getCoffeeShopsService } from '#services/coffee-shops.service'
+
 /**
  * @param {Object} position
  * @param {Number} position.x
@@ -5,8 +7,9 @@
  *
  * @returns {Array<position>}
  */
-export function getNearestShops(position) {
+export async function getNearestShops(position) {
   // code
+  await getCoffeeShopsService()
 
   return []
 }

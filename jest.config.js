@@ -2,6 +2,6 @@ const config = {
   transform: {
     '^.+\\.js$': 'babel-jest',
   },
-};
+}
 
-export default config;
+export default config

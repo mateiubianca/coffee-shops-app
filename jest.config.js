@@ -11,6 +11,7 @@ const customJestConfig = {
   testEnvironment: 'jsdom',
   testMatch: ['**/__tests__/**/*.test.js', '**/?(*.)+(spec|test).js'],
   moduleNameMapper: {
+    '^@app/coffee-shops/(.*)$': '<rootDir>/src/features/coffee-shops/$1',
     '^@app/(.*)$': '<rootDir>/src/$1',
   },
 }

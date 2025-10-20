@@ -1,7 +1,7 @@
 import {
   getTokenService,
   refreshTokenService,
-} from '@app/services/tokens.service'
+} from '@app/coffee-shops/services/tokens.service'
 
 describe('Tokens Integration', () => {
   describe('getTokenService', () => {

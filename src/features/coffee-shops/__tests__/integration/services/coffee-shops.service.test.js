@@ -1,7 +1,7 @@
 import {
   getCoffeeShopsService,
   getClosestCoffeeShopsWithDistance,
-} from '@app/services/coffee-shops.service'
+} from '@app/coffee-shops/services/coffee-shops.service'
 
 describe('Coffee Shops Integration', () => {
   describe('getCoffeeShopsService', () => {

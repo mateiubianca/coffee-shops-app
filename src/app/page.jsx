@@ -1,5 +1,9 @@
-import { getClosestCoffeeShopsWithDistance } from '@app/services/coffee-shops.service'
+import { CoffeeShop } from '@app/coffee-shops/components/coffee-shop'
 
 export default async function Page() {
-  return <h1 className="font-bold text-red-500">Hello, Next.js!</h1>
+  return (
+    <div>
+      <CoffeeShop />
+    </div>
+  )
 }

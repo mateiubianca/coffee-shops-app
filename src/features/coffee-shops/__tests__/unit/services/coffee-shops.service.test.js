@@ -1,17 +1,16 @@
-import { getCoffeeShopsRepository } from '@app/repositories/coffee-shops.repository'
+import { getCoffeeShopsRepository } from '@app/coffee-shops/repositories/coffee-shops.repository'
 import {
   getTokenService,
   refreshTokenService,
-} from '@app/services/tokens.service'
+} from '@app/coffee-shops/services/tokens.service'
 
 import {
   getCoffeeShopsService,
   getClosestCoffeeShopsWithDistance,
-} from '@app/services/coffee-shops.service'
-import * as distanceUtils from '@app/utils/distance.utils'
+} from '@app/coffee-shops/services/coffee-shops.service'
 
-jest.mock('@app/repositories/coffee-shops.repository')
-jest.mock('@app/services/tokens.service')
+jest.mock('@app/coffee-shops/repositories/coffee-shops.repository')
+jest.mock('@app/coffee-shops/services/tokens.service')
 
 describe('Coffee Shop Service', () => {
   const token = 'test-token'

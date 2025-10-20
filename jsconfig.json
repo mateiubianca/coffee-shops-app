@@ -1,12 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "src/",
+    "baseUrl": ".",
     "paths": {
-      "@app/config/*": ["config/*"],
-      "@app/constants/*": ["constants/*"],
-      "@app/repositories/*": ["repositories/*"],
-      "@app/services/*": ["services/*"],
-      "@app/utils/*": ["utils/*"]
+      "@app/*": ["./src/*"]
     }
   }
 }

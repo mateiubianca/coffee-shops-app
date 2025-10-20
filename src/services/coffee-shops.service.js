@@ -1,6 +1,9 @@
-import { getCoffeeShopsRepository } from '#repositories/coffee-shops.repository'
-import { getTokenService, refreshTokenService } from '#services/tokens.service'
-import { getSquaredEuclideanDistance } from '#utils/distance.utils'
+import { getCoffeeShopsRepository } from '@app/repositories/coffee-shops.repository'
+import {
+  getTokenService,
+  refreshTokenService,
+} from '@app/services/tokens.service'
+import { getSquaredEuclideanDistance } from '@app/utils/distance.utils'
 
 export const getCoffeeShopsService = async () => {
   try {

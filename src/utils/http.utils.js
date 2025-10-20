@@ -1,4 +1,6 @@
-import { MAX_REQUEST_RETRIES } from '#constants/index'
+import 'server-only'
+
+import { MAX_REQUEST_RETRIES } from '@app/constants/index'
 
 export class HttpError extends Error {
   status

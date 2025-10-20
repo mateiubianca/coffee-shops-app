@@ -1,7 +1,7 @@
 import {
   getSquaredEuclideanDistance,
   isValidPosition,
-} from '#utils/distance.utils'
+} from '@app/utils/distance.utils'
 
 describe('Distance utils', () => {
   describe('getManhattanDistance', () => {

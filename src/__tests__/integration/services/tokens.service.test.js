@@ -1,4 +1,7 @@
-import { getTokenService, refreshTokenService } from '#services/tokens.service'
+import {
+  getTokenService,
+  refreshTokenService,
+} from '@app/services/tokens.service'
 
 describe('Tokens Integration', () => {
   describe('getTokenService', () => {

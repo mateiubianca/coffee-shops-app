@@ -1,5 +1,5 @@
-import { httpRequest, HttpError } from '#utils/http.utils.js'
-import { mocks } from './mocks.js'
+import { httpRequest, HttpError } from '@app/utils/http.utils.js'
+import { mocks } from './mocks/http.mock.js'
 
 describe('HTTP utils', () => {
   describe('httpRequest', () => {

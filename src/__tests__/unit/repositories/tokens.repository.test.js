@@ -1,8 +1,8 @@
-import config from '#config/api.config'
-import { httpRequest } from '#utils/http.utils'
-import { getTokenRepository } from '#repositories/tokens.repository'
+import config from '@app/config/api.config'
+import { httpRequest } from '@app/utils/http.utils'
+import { getTokenRepository } from '@app/repositories/tokens.repository'
 
-jest.mock('#utils/http.utils')
+jest.mock('@app/utils/http.utils')
 
 describe('Tokens Repository', () => {
   describe('getTokenRepository', () => {

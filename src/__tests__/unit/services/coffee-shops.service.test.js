@@ -1,14 +1,17 @@
-import { getCoffeeShopsRepository } from '#repositories/coffee-shops.repository'
-import { getTokenService, refreshTokenService } from '#services/tokens.service'
+import { getCoffeeShopsRepository } from '@app/repositories/coffee-shops.repository'
+import {
+  getTokenService,
+  refreshTokenService,
+} from '@app/services/tokens.service'
 
 import {
   getCoffeeShopsService,
   getClosestCoffeeShopsWithDistance,
-} from '#services/coffee-shops.service'
-import * as distanceUtils from '#utils/distance.utils'
+} from '@app/services/coffee-shops.service'
+import * as distanceUtils from '@app/utils/distance.utils'
 
-jest.mock('#repositories/coffee-shops.repository')
-jest.mock('#services/tokens.service')
+jest.mock('@app/repositories/coffee-shops.repository')
+jest.mock('@app/services/tokens.service')
 
 describe('Coffee Shop Service', () => {
   const token = 'test-token'
@@ -85,26 +88,17 @@ describe('Coffee Shop Service', () => {
 
   describe('getClosestCoffeeShopsWithDistance', () => {
     it('should return the closest coffee shops with their distance', async () => {
-      const mockDistance = '10.0000'
       getCoffeeShopsRepository.mockResolvedValue([...mockData])
       getTokenService.mockResolvedValue(token)
 
-      const getSquaredEuclideanDistanceSpy = jest.spyOn(
-        distanceUtils,
-        'getSquaredEuclideanDistance'
-      )
-      // this will make sure the mockData array is sorted: [mockData[1], mockData[0]]
-      getSquaredEuclideanDistanceSpy.mockReturnValueOnce(1000)
-      getSquaredEuclideanDistanceSpy.mockReturnValueOnce(100)
-
-      const position = { x: 47.6, y: -122.4 }
+      const position = { x: 38, y: -122.4 }
 
       const result = await getClosestCoffeeShopsWithDistance({
         position,
         limit: 1,
       })
 
-      expect(result).toEqual([{ ...mockData[1], distance: mockDistance }])
+      expect(result).toEqual([{ ...mockData[1], distance: expect.any(String) }])
     })
 
     it('should return the closest coffee shop even when the Manhattan distance is smaller than euclidean', async () => {

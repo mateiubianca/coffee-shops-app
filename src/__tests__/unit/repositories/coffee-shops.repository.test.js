@@ -1,8 +1,8 @@
-import config from '#config/api.config'
-import { httpRequest } from '#utils/http.utils'
-import { getCoffeeShopsRepository } from '#repositories/coffee-shops.repository'
+import config from '@app/config/api.config'
+import { httpRequest } from '@app/utils/http.utils'
+import { getCoffeeShopsRepository } from '@app/repositories/coffee-shops.repository'
 
-jest.mock('#utils/http.utils')
+jest.mock('@app/utils/http.utils')
 
 describe('Coffee Shop Repository', () => {
   describe('getCoffeeShopsRepository', () => {

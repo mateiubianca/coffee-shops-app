@@ -1,4 +1,4 @@
-import { getTokenRepository } from '#repositories/tokens.repository'
+import { getTokenRepository } from '@app/repositories/tokens.repository'
 
 let CACHED_TOKEN = ''
 

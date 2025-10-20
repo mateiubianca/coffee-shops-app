@@ -1,4 +1,4 @@
-jest.mock('#repositories/tokens.repository')
+jest.mock('@app/repositories/tokens.repository')
 
 describe('Tokens Service', () => {
   const mockData = {
@@ -15,9 +15,11 @@ describe('Tokens Service', () => {
 
   describe('refreshTokenService', () => {
     it('should retrieve the token', async () => {
-      const { refreshTokenService } = await import('#services/tokens.service')
+      const { refreshTokenService } = await import(
+        '@app/services/tokens.service'
+      )
       const { getTokenRepository } = await import(
-        '#repositories/tokens.repository'
+        '@app/repositories/tokens.repository'
       )
 
       getTokenRepository.mockResolvedValue(mockData)
@@ -37,10 +39,10 @@ describe('Tokens Service', () => {
 
     it('should return the cached token if available', async () => {
       const { getTokenService, refreshTokenService } = await import(
-        '#services/tokens.service'
+        '@app/services/tokens.service'
       )
       const { getTokenRepository } = await import(
-        '#repositories/tokens.repository'
+        '@app/repositories/tokens.repository'
       )
 
       getTokenRepository.mockResolvedValue(mockData)
@@ -53,9 +55,9 @@ describe('Tokens Service', () => {
     })
 
     it('should get the token', async () => {
-      const { getTokenService } = await import('#services/tokens.service')
+      const { getTokenService } = await import('@app/services/tokens.service')
       const { getTokenRepository } = await import(
-        '#repositories/tokens.repository'
+        '@app/repositories/tokens.repository'
       )
 
       getTokenRepository.mockResolvedValue(mockData)

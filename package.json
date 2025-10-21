@@ -33,6 +33,7 @@
     "whatwg-fetch": "^3.6.20"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/postcss": "^4.1.15",
     "class-variance-authority": "^0.7.1",

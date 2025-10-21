@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "preserve",
+    "checkJs": true,
+    "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
       "@app/*": ["./src/*"],
       "@app/coffee-shops/*": ["./src/features/coffee-shops/*"]
     }
-  }
+  },
+  "include": ["**/*.js", "**/*.jsx"]
 }

@@ -1,5 +1,6 @@
 import { CoffeeShopList } from '@app/coffee-shops/components/coffee-shops-list'
 import { CoffeeShopsFilters } from '@app/coffee-shops/components/coffee-shops-filters'
+
 import { Suspense } from 'react'
 
 export default async function Page() {
@@ -9,7 +10,6 @@ export default async function Page() {
       <div className="flex flex-row gap-4 justify-between">
         <CoffeeShopsFilters />
         <Suspense fallback={<div>Loading coffee shops...</div>}>
-          {/* @ts-expect-error Async Server Component */}
           <CoffeeShopList />
         </Suspense>
       </div>

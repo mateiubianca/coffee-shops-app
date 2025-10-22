@@ -10,7 +10,7 @@ export default function ErrorPage() {
       </h1>
       <Button
         onClick={() => {
-          window.location.reload()
+          window.location.href = '/'
         }}
       >
         Reload Page

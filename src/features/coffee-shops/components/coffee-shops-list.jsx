@@ -1,24 +1,33 @@
-import { getCoffeeShopsService } from '@app/coffee-shops/services/coffee-shops.service'
+'use client'
 
-export const CoffeeShopList = async () => {
-  const result = await getCoffeeShopsService()
+import { useEffect } from 'react'
+import { useCoffeeShops } from '@app/coffee-shops/contexts/coffee-shops.context'
 
-  if (!result || result.length === 0) {
+export const CoffeeShopsList = ({ result }) => {
+  const { initializeCoffeeShops, coffeeShops } = useCoffeeShops()
+
+  useEffect(() => {
+    initializeCoffeeShops(result)
+  }, [result, initializeCoffeeShops])
+
+  if (!coffeeShops || coffeeShops.length === 0) {
     return <div>No coffee shops available.</div>
   }
 
   return (
-    <div className="w-1/2 justify-center flex">
-      <div className="flex flex-col gap-4 border p-4 rounded-lg">
-        {result.map((shop) => (
-          <div key={shop.id}>
-            <h2>{shop.name}</h2>
-            <p>
-              {shop.x}, {shop.y}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      {coffeeShops.map((shop) => (
+        <div
+          key={shop.id}
+          className={shop.distance && '[&:nth-child(-n+3)]:text-chart-4'}
+        >
+          <h2>{shop.name}</h2>
+          <p>
+            {shop.x}, {shop.y}
+            {shop.distance && <>, Distance: {shop.distance}</>}
+          </p>
+        </div>
+      ))}
+    </>
   )
 }

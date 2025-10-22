@@ -5,11 +5,13 @@
     "jsx": "preserve",
     "checkJs": true,
     "moduleResolution": "bundler",
+    "types": ["jest", "@testing-library/jest-dom"],
     "baseUrl": ".",
     "paths": {
       "@app/*": ["./src/*"],
       "@app/coffee-shops/*": ["./src/features/coffee-shops/*"]
     }
   },
-  "include": ["**/*.js", "**/*.jsx"]
+  "include": ["**/*.js", "**/*.jsx"],
+  "exclude": ["**/*.test.js", "**/*.test.jsx", "**/*.spec.js", "jest.config.js"]
 }

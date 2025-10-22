@@ -5,7 +5,17 @@ import {
 } from '@app/coffee-shops/services/tokens.service'
 import { getSquaredEuclideanDistance } from '@app/coffee-shops/utils/distance.utils'
 
-export const getCoffeeShopsService = async () => {
+export const getCoffeeShopsService = async (
+  { noResults, errorCase } = { noResults: false, errorCase: false }
+) => {
+  if (noResults) {
+    return []
+  }
+
+  if (errorCase) {
+    throw { status: 401, message: 'Unauthorized' }
+  }
+
   try {
     const token = await getTokenService()
 

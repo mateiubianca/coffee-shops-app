@@ -5,9 +5,33 @@ import {
 } from '@app/coffee-shops/services/tokens.service'
 import { getSquaredEuclideanDistance } from '@app/coffee-shops/utils/distance.utils'
 
-export const getCoffeeShopsService = async (
-  { noResults, errorCase } = { noResults: false, errorCase: false }
-) => {
+const sortCoffeeShopsByDistance = (position, coffeeShops) => {
+  const coffeeShopsWithSquaredDistance = coffeeShops.map((coffeeShop) => ({
+    ...coffeeShop,
+    distance: Math.sqrt(
+      getSquaredEuclideanDistance(position, coffeeShop)
+    ).toFixed(4),
+  }))
+
+  // We use the squaredDistance for sorting, since it is slower to calculate the square root
+  return coffeeShopsWithSquaredDistance.sort(
+    (coffeeShopA, coffeeShopB) => coffeeShopA.distance - coffeeShopB.distance
+  )
+}
+
+const filterCoffeeShopsByName = (name, coffeeShops) => {
+  return coffeeShops.filter((shop) =>
+    shop.name.toLowerCase().includes(name.toLowerCase())
+  )
+}
+
+export const getCoffeeShopsService = async ({
+  noResults,
+  errorCase,
+  x,
+  y,
+  name,
+}) => {
   if (noResults) {
     return []
   }
@@ -16,19 +40,33 @@ export const getCoffeeShopsService = async (
     throw { status: 401, message: 'Unauthorized' }
   }
 
+  let coffeeShops
+
   try {
     const token = await getTokenService()
 
-    return await getCoffeeShopsRepository(token)
+    coffeeShops = await getCoffeeShopsRepository(token)
   } catch (e) {
     if (e.status === 401) {
       // if unauthorized error, refresh the token and retry the operation
       const newToken = await refreshTokenService()
-      return getCoffeeShopsRepository(newToken)
+      coffeeShops = getCoffeeShopsRepository(newToken)
     }
 
     throw e
   }
+
+  let filteredShops = coffeeShops
+
+  if (name) {
+    filteredShops = filterCoffeeShopsByName(name, filteredShops)
+  }
+
+  if (x && y) {
+    filteredShops = sortCoffeeShopsByDistance({ x, y }, filteredShops)
+  }
+
+  return filteredShops
 }
 
 export const getClosestCoffeeShopsWithDistance = async ({

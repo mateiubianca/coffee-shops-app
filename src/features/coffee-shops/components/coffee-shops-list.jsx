@@ -1,22 +1,22 @@
-'use client'
+import { getCoffeeShopsService } from '@app/coffee-shops/services/coffee-shops.service'
 
-import { useEffect } from 'react'
-import { useCoffeeShops } from '@app/coffee-shops/contexts/coffee-shops.context'
+export const CoffeeShopList = async ({ searchParams }) => {
+  const { noResults, errorCase, x, y, name } = await searchParams
+  const result = await getCoffeeShopsService({
+    noResults,
+    errorCase,
+    x,
+    y,
+    name,
+  })
 
-export const CoffeeShopsList = ({ result }) => {
-  const { initializeCoffeeShops, coffeeShops } = useCoffeeShops()
-
-  useEffect(() => {
-    initializeCoffeeShops(result)
-  }, [result, initializeCoffeeShops])
-
-  if (!coffeeShops || coffeeShops.length === 0) {
-    return <div>No coffee shops available.</div>
+  if (result.length === 0) {
+    return <p className="text-neutral-500">No coffee shops found.</p>
   }
 
   return (
     <>
-      {coffeeShops.map((shop) => (
+      {result.map((shop) => (
         <div
           key={shop.id}
           className={shop.distance && '[&:nth-child(-n+3)]:text-chart-4'}

@@ -3,44 +3,47 @@
 import React, { useRef } from 'react'
 import { Input } from '@app/components/ui/input'
 import { Label } from '@app/components/ui/label'
-
-import { useCoffeeShops } from '@app/coffee-shops/contexts/coffee-shops.context'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export const CoffeeShopsFilters = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const filterRef = useRef(null)
 
-  const [xPosition, setXPosition] = React.useState('')
-  const [yPosition, setYPosition] = React.useState('')
-  const [name, setName] = React.useState('')
-  const { filterCoffeeShops } = useCoffeeShops()
+  const [xPosition, setXPosition] = React.useState(searchParams.get('x') || '')
+  const [yPosition, setYPosition] = React.useState(searchParams.get('y') || '')
+  const [name, setName] = React.useState(searchParams.get('name') || '')
 
   const onFilterCoffeeShops = (x, y, name) => {
-    const params = {}
+    const params = new URLSearchParams(searchParams)
 
     if (name.trim() !== '') {
-      params.name = name.trim()
+      params.set('name', name.trim())
+    } else {
+      params.delete('name')
     }
 
-    if (x !== '' && !isNaN(x) && y !== '' && !isNaN(y)) {
-      params.position = { x: Number(x), y: Number(y) }
+    if (x !== '' && !isNaN(x)) {
+      params.set('x', x)
+    } else {
+      params.delete('x')
     }
 
-    filterCoffeeShops(params)
+    if (y !== '' && !isNaN(y)) {
+      params.set('y', y)
+    } else {
+      params.delete('y')
+    }
+
+    router.replace(`${pathname}?${params.toString()}`)
   }
 
-  const onCoordinateChange = (x, y) => {
+  const onFilterChange = (...args) => {
     clearTimeout(filterRef.current)
 
     filterRef.current = setTimeout(() => {
-      onFilterCoffeeShops(x, y, name)
-    }, 500)
-  }
-
-  const onNameChange = (value) => {
-    clearTimeout(filterRef.current)
-
-    filterRef.current = setTimeout(() => {
-      onFilterCoffeeShops(xPosition, yPosition, value)
+      onFilterCoffeeShops(...args)
     }, 500)
   }
 
@@ -58,7 +61,7 @@ export const CoffeeShopsFilters = () => {
           value={xPosition}
           onChange={(e) => {
             setXPosition(e.target.value)
-            onCoordinateChange(e.target.value, yPosition)
+            onFilterChange(e.target.value, yPosition, name)
           }}
         />
       </div>
@@ -73,7 +76,7 @@ export const CoffeeShopsFilters = () => {
           value={yPosition}
           onChange={(e) => {
             setYPosition(e.target.value)
-            onCoordinateChange(xPosition, e.target.value)
+            onFilterChange(xPosition, e.target.value, name)
           }}
         />
       </div>
@@ -88,7 +91,7 @@ export const CoffeeShopsFilters = () => {
           value={name}
           onChange={(e) => {
             setName(e.target.value)
-            onNameChange(e.target.value)
+            onFilterChange(xPosition, yPosition, e.target.value)
           }}
         />
       </div>

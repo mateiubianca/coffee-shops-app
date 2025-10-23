@@ -17,11 +17,9 @@ export default async function Page({ searchParams }) {
             <CoffeeShopsFilters />
             <div className="sm:w-1/2 justify-center flex flex-col gap-4 max-h-full w-full">
               <h2 className="text-2xl">Coffee Shops List</h2>
-              <div className="flex flex-col gap-4 border p-4 rounded-lg w-full overflow-y-auto h-full">
-                <CoffeeShopsListWrapper>
-                  <CoffeeShopList searchParams={searchParams} />
-                </CoffeeShopsListWrapper>
-              </div>
+              <CoffeeShopsListWrapper>
+                <CoffeeShopList searchParams={searchParams} />
+              </CoffeeShopsListWrapper>
             </div>
           </>
         </CoffeeShopsLoadingProvider>

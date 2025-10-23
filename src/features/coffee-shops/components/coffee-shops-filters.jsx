@@ -4,12 +4,14 @@ import React, { useRef } from 'react'
 import { Input } from '@app/components/ui/input'
 import { Label } from '@app/components/ui/label'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useCoffeeShopsLoading } from '@app/coffee-shops/contexts/coffee-shops-loading.context'
 
 export const CoffeeShopsFilters = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const filterRef = useRef(null)
+  const { startTransition } = useCoffeeShopsLoading()
 
   const [xPosition, setXPosition] = React.useState(searchParams.get('x') || '')
   const [yPosition, setYPosition] = React.useState(searchParams.get('y') || '')
@@ -36,7 +38,9 @@ export const CoffeeShopsFilters = () => {
       params.delete('y')
     }
 
-    router.replace(`${pathname}?${params.toString()}`)
+    startTransition(() => {
+      router.replace(`${pathname}?${params.toString()}`)
+    })
   }
 
   const onFilterChange = (...args) => {
